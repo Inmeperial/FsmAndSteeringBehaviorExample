@@ -1,0 +1,54 @@
+Anotaciones Final IA1
+
+https://classroom.google.com/u/1/w/NTQ5MjUxNzEwMDVa/tc/OTI5NDcyNTM2NTJa
+
+
+A delegate is a type that safely encapsulates a method, similar to a function pointer in C and C++. 
+
+* Behaviour trees tend to be more natural for things like decision making, goal planning and similar. FSMs tend to be more natural for things that are natural state machines, like animation states.
+
+* FSM :
+	* Una máquina de estados, también conocida como FSM (Finite State Machine),  es un modelo de comportamientos que, en nuestro caso, van a seguir nuestros NPC.
+	La misma está conformada por estados. Dependiendo el estado, nuestra máquina va a realizar distintas acciones las cuales pueden, o no, provocar un cambio de estado al finalizar.
+	
+* Steer Behaviour:
+	* Son comportamientos en los cuales se les asigna una dirección para un determinado objetivo.
+	
+* Flocking :
+	* Es un tipo de comportamiento donde la idea es simular el movimiento de un rebaño.
+	
+* Usar los scripts de la clase de Flocking que esta todo actualizado.
+* Final de Leandro con el que hago el final de la carrera https://github.com/LeandroBiloni/Unity-AI-Mini-War-2021
+* 1:35 muestra ya el ejemplo terminado.
+* 
+
+* Hacer todo el tp y poner flocking al final, ya que tiene muchas cuentas.
+
+
+El " Roulette Wheel Selection " esta en la funcion " SetWeightForStates " .
+
+--------------------------
+* Fijarse que los sets de los atributos esten siempre parejos, algunos se inician cuando se crea la var y otros en el start/setAtributes.
+* GameManager separar mejor las funciones y usar ese script solo como static singleton.
+* Agent de que? cambiar el nombre de la clase, no se entiende si es un modelo, si es un controlador o que.
+* No hay un particleManager.
+** Crear un UML de los scritps y en general del proceso de hero/minion y demas.
+* Crear un FlyWeigth para las variables a setear de las clases.
+* El FSMMoveHero que usa al Hero, ver que esten bien las relaciones.
+* HeroScript:
+	* AttackedFocus no se usa?
+	* Rehacer SetColorForState a algo mejor.
+	* Set StateToCheckIfRandom , no se puede mejorar?.
+* CreateAndSetFSM estan en hero y en Minion, se puede poner en una interfaz.
+* Crear una funcion que setee todos los estados al estado Idle-Transition, para que se entienda mejor que es ese el Iddle.
+* En el WayPointSystem de FSMMoveHeroes necesario mirar primero al target ?.
+* CheckEnemyHeroOnAoEByTime de FSMMoveHeroes lo mejor seria primero chequear la distancia entre obj y enemy para no estar tirando un Physics.OverlapSphere y un forEach en cada update frame. Igual se hace a travez de un timer, pero se podria mejorar la logica.
+* Usar el " position += ... " .
+* CheckIfEnemyOnVision -> es con timer asique ponerle eso en la funcion name.
+* El checkEnemy de hero esta en el FSM Movement y el checkEnemy de minion esta en el minion, cambiar eso.
+* MinionIA -> IsTargetVisible -> el if del _radiusVision siempre va a dar true porque antes trae solo los que estan adentro (salvo que adentro del for cambien de pos, ver que pasa).
+* MinionIA -> IsTargetVisible checekar en general.
+* Hacer un observer para los update y se que maneje en un observerUpdate.
+** Googlear si es mejor el Destroy(obj) o hacer el diseable.
+* Crear un controlador de FSM para hero y un controlador de Sbehavior para el minion, que no ninguno este adentro de la clase hero/minion.
+* 

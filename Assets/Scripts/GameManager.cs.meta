@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 52d41ce9d6147594d9bbff3cf7e2742f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - allHealParticle: {instanceID: 0}
+  - allBlockParticle: {instanceID: 0}
+  - focusToMinionParticle: {instanceID: 0}
+  - herosAndMinions: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
