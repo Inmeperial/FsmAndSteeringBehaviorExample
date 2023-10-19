@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using UnityEngine;
 
+[RequireComponent(typeof(FlyweightManager))]
 public class GameManager : MonoBehaviour
 {
     public ParticleSystem allHealParticle;
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour
     public LayerMask layersInSightForAgent;
     public GameObject herosAndMinions;
 
+    private FlyweightManager _flyweightManager;
     private RayCastForNodes _raycastForNodes;
     private Agent _agent;
     private float _radiusScanNode = 3;
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
         _agent = this.gameObject.GetComponent<Agent>();
         _agent.LayersInSight = layersInSightForAgent;
         _raycastForNodes = this.gameObject.GetComponent<RayCastForNodes>();
+        FlyweightManager = this.gameObject.GetComponent<FlyweightManager>();
     }
 
     void Start()
@@ -46,6 +49,13 @@ public class GameManager : MonoBehaviour
         {
             herosAndMinions.SetActive(true);
         }
+    }
+
+
+    public FlyweightManager FlyweightManager
+    {
+        get { return _flyweightManager; }
+        private set { _flyweightManager = value; }
     }
 
     public List<Node> GetPathTheta(Node init, Node end)

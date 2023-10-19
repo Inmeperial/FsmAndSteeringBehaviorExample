@@ -77,4 +77,7 @@ FSM:
 	* _current -> FSMState
 
 Agent:
-	
+--------------------------
+* Se cambio el Hero y se le agrego el MinionManager
+* Se agrego el FlyweightManager para el GameManager y ahora lo usan otras clases.
+* 

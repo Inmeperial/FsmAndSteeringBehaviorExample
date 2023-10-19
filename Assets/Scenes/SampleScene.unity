@@ -1305,6 +1305,7 @@ GameObject:
   - component: {fileID: 1476836152}
   - component: {fileID: 1476836150}
   - component: {fileID: 1476836151}
+  - component: {fileID: 1476836153}
   m_Layer: 0
   m_Name: GameManagerObj
   m_TagString: Untagged
@@ -1379,6 +1380,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bfdbafa0494b841b2b1e89dae01f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1476836153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476836148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 288e82fc0b0b0854fa2e577e091b6c17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialTeamOne: {fileID: 2100000, guid: 4a4647dc973a24c43af9768d9dc1c1bc, type: 2}
+  materialTeamTwo: {fileID: 2100000, guid: 2a4519ed1f7be65418148a23f1d62b62, type: 2}
+  layerNodes:
+    serializedVersion: 2
+    m_Bits: 128
+  maskToAvoid:
+    serializedVersion: 2
+    m_Bits: 64
+  minionPrefab: {fileID: 629317055810286772, guid: b9fc5959806811142ba96828cf6bfb97, type: 3}
 --- !u!1 &1699982372
 GameObject:
   m_ObjectHideFlags: 0

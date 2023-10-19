@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 
-[RequireComponent(typeof(MinionManager))] // HeroScript requires the GameObject to have a MinionManager component
+[RequireComponent(typeof(MinionManager))]
 public class HeroScript : MonoBehaviour, ICharacterInterface
 {
     [SerializeField] private bool _isTeamOne = false;
@@ -13,13 +13,9 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     [SerializeField] private int _lifeTotalHero = 0;
     [SerializeField] private int _lifeTotalMinion = 0;
     [SerializeField] private int _totalMinions = 0;
-    [SerializeField] private GameObject _minionPrefab;
-    [SerializeField] private LayerMask _layerNodes;
+    
     [SerializeField] private LayerMask _layerMinionEnemy;
-    [SerializeField] private LayerMask _maskToAvoid;
 
-    [SerializeField] private Material _material1;
-    [SerializeField] private Material _material2;
     
     private int _life;
     private GameObject _stateColorObj;
@@ -111,22 +107,12 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     {
         get { return _speed; }
     }
-
-    public LayerMask MaskToAvoid
-    {
-        get { return _maskToAvoid; }
-    }
-
+    
     public LayerMask LayerMinionEnemy
     {
         get { return _layerMinionEnemy; }
     }
-
-    public LayerMask LayerNodes
-    {
-        get { return _layerNodes; }
-    }
-
+    
     public List<Node> ListNodesForWayPoint
     {
         get { return _listNodesForWayPoint; }
@@ -285,7 +271,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
     private void CreateMinions(int totalMinions)
     {
-        List<Collider> collNodesList = Physics.OverlapSphere(this.transform.position, _radiusBehavior, _layerNodes).ToList<Collider>();
+        List<Collider> collNodesList = Physics.OverlapSphere(this.transform.position, _radiusBehavior, GameManager.gameManagerStatic.FlyweightManager.layerNodes).ToList<Collider>();
 
         int randomInt;
 
@@ -296,7 +282,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
                 randomInt = UnityEngine.Random.Range(0, collNodesList.Count);
                 Vector3 posV3 = new Vector3(collNodesList[randomInt].gameObject.transform.position.x, this.transform.position.y, collNodesList[randomInt].gameObject.transform.position.z);
                 collNodesList.RemoveAt(randomInt);
-                _minionManager.CreateNewMinion(_minionPrefab, posV3, this, _isTeamOne);
+                _minionManager.CreateNewMinion(posV3, this, _isTeamOne);
             }
         }
         else
@@ -335,12 +321,12 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         if (_isTeamOne)
         {
             this.gameObject.layer = LayerMask.NameToLayer("Hero1");
-            this.gameObject.GetComponent<MeshRenderer>().material = _material1;
+            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamOne;
         }
         else
         {
             this.gameObject.layer = LayerMask.NameToLayer("Hero2");
-            this.gameObject.GetComponent<MeshRenderer>().material = _material2;
+            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamTwo;
         }
 
         CreateMinions(_totalMinions);

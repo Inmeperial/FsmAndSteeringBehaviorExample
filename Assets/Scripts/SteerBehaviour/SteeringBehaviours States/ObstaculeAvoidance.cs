@@ -7,15 +7,13 @@ public class ObstaculeAvoidance : ISteeringBehaviour
     Transform _from;
     Transform _target;
     float _radius;
-    LayerMask _mask;
     float _avoidWeight;
 
-    public ObstaculeAvoidance(Transform from, Transform target, float radius, float avoidWeight, LayerMask mask)
+    public ObstaculeAvoidance(Transform from, Transform target, float radius, float avoidWeight)
     {
         _from = from;
         _target = target;
         _avoidWeight = avoidWeight;
-        _mask = mask;
         _radius = radius;
     }
 
@@ -23,7 +21,7 @@ public class ObstaculeAvoidance : ISteeringBehaviour
     {
         Vector3 dir = (_target.position - _from.position).normalized;
         Transform obs = null;
-        Collider[] obstacles = Physics.OverlapSphere(_from.position, _radius, _mask);
+        Collider[] obstacles = Physics.OverlapSphere(_from.position, _radius, GameManager.gameManagerStatic.FlyweightManager.maskToAvoid);
         if (obstacles.Length > 0)
         {
             foreach (var item in obstacles)

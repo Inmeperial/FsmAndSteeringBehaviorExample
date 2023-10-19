@@ -5,6 +5,7 @@ using UnityEngine;
 public class MinionManager : MonoBehaviour
 {
     private List<GameObject> _minionsList;
+    // private bool _isHeroDead; // need this so the code can clean the _minionsList and dont crash with RemoveMinion.
 
     public List<GameObject> MinionsList
     {
@@ -17,9 +18,9 @@ public class MinionManager : MonoBehaviour
         _minionsList = new List<GameObject>();
     }
 
-    public void CreateNewMinion(GameObject preFab, Vector3 pos, HeroScript heroFather, bool isTeamOne)
+    public void CreateNewMinion(Vector3 pos, HeroScript heroFather, bool isTeamOne)
     {
-        GameObject obj = Instantiate(preFab, pos, Quaternion.identity);
+        GameObject obj = Instantiate(GameManager.gameManagerStatic.FlyweightManager.minionPrefab, pos, Quaternion.identity);
         SetPropertiesNewMinion(obj, heroFather, isTeamOne);
         AddMinionToList(obj);
 
@@ -33,26 +34,34 @@ public class MinionManager : MonoBehaviour
 
         if (isTeamOne)
         {
-            obj.GetComponent<MeshRenderer>().material = _material1;
+            obj.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamOne;
         }
         else
         {
-            obj.GetComponent<MeshRenderer>().material = _material2;
+            obj.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamTwo;
         }
 
     }
 
     public void KillAllMinions()
     {
+        // _isHeroDead = true;
         foreach (GameObject minion in _minionsList)
         {
             minion.GetComponent<MinionIA>().DieMinion(this.gameObject);
         }
+
     }
 
     public void RemoveMinion(GameObject obj)
     {
-        _minionsList.Remove(obj);
+        obj.SetActive(false);
+        //Debug.Log("RemoveMinion");
+        //if (!_isHeroDead)
+        //{
+        //    _minionsList.Remove(obj);
+        //}
+       
     }
 
     private void AddMinionToList(GameObject obj)

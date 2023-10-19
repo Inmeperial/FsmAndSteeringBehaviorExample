@@ -7,7 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 public class MinionIA : MonoBehaviour, ICharacterInterface
 {
     private HeroScript _heroAlly;
-    
+
     private float _speedOriginal;
     private float _speed;
     private float _radiusBehavior = 2;
@@ -37,7 +37,6 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
 
     // ObstaculeAvoidance Stuff
     private float _avoidWeigth = 2;
-    private LayerMask _maskToAvo;
 
     // Flocking stuff
     private LayerMask _maskFlock;
@@ -52,7 +51,6 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
         {
             SetUpMinionAttributes();
             CreateAndSetFSM();
-            _fsm = new FSM<StateMinionEnum>(_moveToObjFSM);
             SetColorForState(StateMinionEnum.move);
         }
         else
@@ -278,7 +276,7 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
                 _sBehaviour = new Seek(transform, target.transform);
                 break;
             case SteerBehaviourEnum.obstaculeAvoidance:
-                _sBehaviour = new ObstaculeAvoidance(transform, target.transform, _radiusBehavior, _avoidWeigth, _maskToAvo);
+                _sBehaviour = new ObstaculeAvoidance(transform, target.transform, _radiusBehavior, _avoidWeigth);
                 break;
             case SteerBehaviourEnum.flocking:
                 _sBehaviour = new Flocking(transform, target.transform, _radiusBehavior, _maskFlock, _leader, _separation, _alineation, _cohesion);
@@ -329,10 +327,12 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
 
         _moveToObjFSM.SetTransition(StateMinionEnum.patrol, _patrolFSM);
         _moveToObjFSM.SetTransition(StateMinionEnum.attack, _attackFSM);
-        _moveToObjFSM.SetTransition(StateMinionEnum.move, _moveToObjFSM); //needed to move if minion is too far from hero
+        _moveToObjFSM.SetTransition(StateMinionEnum.move, _moveToObjFSM); // needed to move if minion is too far from hero
 
         _patrolFSM.SetTransition(StateMinionEnum.move, _moveToObjFSM);
         _attackFSM.SetTransition(StateMinionEnum.move, _moveToObjFSM);
+
+        _fsm = new FSM<StateMinionEnum>(_moveToObjFSM);
 
     }
 
@@ -346,7 +346,6 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
         _life = _lifeTotalMinion;
         LayerEnemy = HeroAlly.LayerMinionEnemy;
         _maskFlock = HeroAlly.gameObject.layer;
-        _maskToAvo = HeroAlly.MaskToAvoid;
         _objectState = this.gameObject.transform.GetChild(1).gameObject;
         _lifeTrigerBlock = 40 * _lifeTotalMinion / 100; // 20 * 10 / 100
         _timeBlocking = _timeBlockingTotal;
