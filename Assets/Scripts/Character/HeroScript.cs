@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 
+[RequireComponent(typeof(MinionManager))] // HeroScript requires the GameObject to have a MinionManager component
 public class HeroScript : MonoBehaviour, ICharacterInterface
 {
     [SerializeField] private bool _isTeamOne = false;
@@ -19,14 +20,14 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
     [SerializeField] private Material _material1;
     [SerializeField] private Material _material2;
-
-    private List<GameObject> _minionsList;
+    
     private int _life;
     private GameObject _stateColorObj;
     private readonly float _radiusBehavior = 4;
     private bool _enemyHeroFound = false;
     private GameObject _objetiveToGo;
     private GameObject _heroEnemy;
+    private MinionManager _minionManager;
 
     // NodesMovement
     private Node _endNode = default;
@@ -71,7 +72,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     }
 
     #region Get/Set
-    
+
     public GameObject ObjectiveToGo
     {
         get { return _objetiveToGo; }
@@ -84,10 +85,9 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         set { _heroEnemy = value; }
     }
 
-    public List<GameObject> MinionsList
+    public List<GameObject> GetMinionsList
     {
-        get { return _minionsList; }
-        set { _minionsList = value; }
+        get { return _minionManager.MinionsList; }
     }
 
     public bool EnemyHeroFound
@@ -202,13 +202,13 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
     public void Die()
     {
-        KillAllMinions();
+        _minionManager.KillAllMinions();
         Destroy(this.gameObject);
     }
 
     public void RemoveMinion(GameObject obj)
     {
-        _minionsList.Remove(obj);
+        _minionManager.RemoveMinion(obj);
     }
 
     private void SetNextState()
@@ -220,7 +220,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         else
         {
             if (!_isRandomStarted)
-            { 
+            {
                 SetStateFSM(StateHeroEnum.moveHero); // if we found enemy then MoveHero State is just for iddle form and is used as transition between others states.
                 SetStateFSM(SetWeightForStates());
                 _timeSkill = _timeSkillTotal;
@@ -238,11 +238,11 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
         int _numForRandomState = 0;
 
-        if (_minionsList.Count + 1 <= GetNumberOfEnemysOnAoe())
+        if (_minionManager.MinionsList.Count + 1 <= GetNumberOfEnemysOnAoe())
         {
             _numForRandomState += 10;
         }
-        if (_minionsList.Count == _totalMinions / 2)
+        if (_minionManager.MinionsList.Count == _totalMinions / 2)
         {
             _numForRandomState += 10;
         }
@@ -287,31 +287,16 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     {
         List<Collider> collNodesList = Physics.OverlapSphere(this.transform.position, _radiusBehavior, _layerNodes).ToList<Collider>();
 
-        System.Random rd = new System.Random();
-        int rInt = 0;
+        int randomInt;
 
         if (totalMinions > 0)
         {
             for (var i = 0; i < totalMinions; i++)
             {
-                rInt = rd.Next(0, collNodesList.Count);
-                Vector3 posV3 = new Vector3(collNodesList[rInt].gameObject.transform.position.x, this.transform.position.y, collNodesList[rInt].gameObject.transform.position.z);
-                GameObject obj = Instantiate(_minionPrefab, posV3, Quaternion.identity);
-                obj.GetComponent<MinionIA>().HeroAlly = this;
-                obj.transform.SetParent(this.transform.parent);
-                obj.layer = this.gameObject.layer;
-
-                if (_isTeamOne)
-                {
-                    obj.GetComponent<MeshRenderer>().material = _material1;
-                }
-                else
-                {
-                    obj.GetComponent<MeshRenderer>().material = _material2;
-                }
-
-                collNodesList.RemoveAt(rInt);
-                AddMinionToList(obj);
+                randomInt = UnityEngine.Random.Range(0, collNodesList.Count);
+                Vector3 posV3 = new Vector3(collNodesList[randomInt].gameObject.transform.position.x, this.transform.position.y, collNodesList[randomInt].gameObject.transform.position.z);
+                collNodesList.RemoveAt(randomInt);
+                _minionManager.CreateNewMinion(_minionPrefab, posV3, this, _isTeamOne);
             }
         }
         else
@@ -344,7 +329,8 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         SetColorForState(StateHeroEnum.moveHero);
 
         _life = _lifeTotalHero;
-        _minionsList = new List<GameObject>();
+        _minionManager = this.GetComponent<MinionManager>();
+        _minionManager.StartNewMinionList();
 
         if (_isTeamOne)
         {
@@ -360,18 +346,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         CreateMinions(_totalMinions);
     }
 
-    private void KillAllMinions()
-    {
-        foreach (GameObject minion in _minionsList.ToList())
-        {
-            minion.GetComponent<MinionIA>().DieMinion(this.gameObject);
-        }
-    }
-
-    private void AddMinionToList(GameObject obj)
-    {
-        _minionsList.Add(obj);
-    }
+  
 
     private void CreateAndSetFSM()
     {

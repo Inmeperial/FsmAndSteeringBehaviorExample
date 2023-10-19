@@ -28,7 +28,7 @@ public class FSMFocusToMinion<T> : FSMState<T>
 
     private void FocusToMinion()
     {
-        List<GameObject> listMinions = _heroScript.MinionsList;
+        List<GameObject> listMinions = _heroScript.GetMinionsList;
         if (_heroScript.ObjectiveToGo != null)
         {
             foreach (GameObject itemObj in listMinions)

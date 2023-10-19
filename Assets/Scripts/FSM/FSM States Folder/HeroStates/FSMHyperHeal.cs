@@ -43,7 +43,7 @@ public class FSMHyperHeal<T> : FSMState<T>
     {
         MinionIA minionForReturn;
 
-        List<GameObject> listMinions = _heroScript.MinionsList;
+        List<GameObject> listMinions = _heroScript.GetMinionsList;
 
 
         if (listMinions.Count > 0)

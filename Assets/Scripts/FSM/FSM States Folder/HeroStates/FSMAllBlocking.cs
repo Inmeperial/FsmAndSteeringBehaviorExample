@@ -28,7 +28,7 @@ public class FSMAllBlocking<T> : FSMState<T>
 
     private void GetMinionWithLessLife()
     {
-        List<GameObject> listMinions = _heroScript.MinionsList;
+        List<GameObject> listMinions = _heroScript.GetMinionsList;
 
         foreach (GameObject itemObj in listMinions)
         {

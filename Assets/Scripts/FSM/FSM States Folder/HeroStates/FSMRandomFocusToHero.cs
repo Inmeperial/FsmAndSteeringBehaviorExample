@@ -28,7 +28,7 @@ public class FSMRandomFocusToHero<T> : FSMState<T>
 
     private void FocusToHeroEnemy()
     {
-        List<GameObject> listMinions = _heroScript.MinionsList;
+        List<GameObject> listMinions = _heroScript.GetMinionsList;
         if (_heroScript.HeroEnemy != null)
         {
             foreach (GameObject itemObj in listMinions)
