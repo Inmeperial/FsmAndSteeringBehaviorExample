@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MinionIA">
+    <Position X="1.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AK4MACDADC5AcgIkIH2ABAARSAB0S0hMBEAwCAABgQA=</HashCode>
+      <FileName>Assets\Scripts\Character\MinionIA.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FSMAttackMinion&lt;T&gt;">
+    <Position X="5" Y="0.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAIAAAABAgAAAABAAAAAAAAIAAAAAAAIAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\FSM\FSM States Folder\MinionStates\FSMAttackMinion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FSMMoveToObjective&lt;T&gt;">
+    <Position X="7.25" Y="1.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAAEAABAAAAAAhAAAAAAAABAAAEAAAIAAAgUABAA=</HashCode>
+      <FileName>Assets\Scripts\FSM\FSM States Folder\MinionStates\FSMMoveToObjective.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FSMPatrol&lt;T&gt;">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAABAAAAAABAAAAAAAAAAAAAAAAIAAQAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\FSM\FSM States Folder\MinionStates\FSMPatrol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FSM&lt;T&gt;">
+    <Position X="5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAABAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\FSM\FSM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

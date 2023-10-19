@@ -58,6 +58,7 @@ public class Theta<T>
         }
         return null;
     }
+
     List<T> ContructPath(T end, Dictionary<T, T> parents)
     {
         var path = new List<T>();

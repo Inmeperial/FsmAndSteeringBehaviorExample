@@ -82,6 +82,7 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
     }
 
     #region "Get/Set"
+
     public bool IsBlockingDamage
     {
         get { return _IsBlockingDamage; }
