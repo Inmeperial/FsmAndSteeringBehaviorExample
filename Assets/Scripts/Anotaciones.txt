@@ -28,6 +28,7 @@ A delegate is a type that safely encapsulates a method, similar to a function po
 El " Roulette Wheel Selection " esta en la funcion " SetWeightForStates " .
 
 --------------------------
+** Arreglar que el personaje no se mueve en Theta real porque no corta camino si es que no esta obstruido.
 * Fijarse que los sets de los atributos esten siempre parejos, algunos se inician cuando se crea la var y otros en el start/setAtributes.
 * GameManager separar mejor las funciones y usar ese script solo como static singleton.
 * Agent de que? cambiar el nombre de la clase, no se entiende si es un modelo, si es un controlador o que.
@@ -51,4 +52,29 @@ El " Roulette Wheel Selection " esta en la funcion " SetWeightForStates " .
 * Hacer un observer para los update y se que maneje en un observerUpdate.
 ** Googlear si es mejor el Destroy(obj) o hacer el diseable.
 * Crear un controlador de FSM para hero y un controlador de Sbehavior para el minion, que no ninguno este adentro de la clase hero/minion.
+* En el RayCastForNodes tambien se crean, hay que cambiar eso.
+* Es necesario que sean delegate en Theta?
 * 
+--------------------------
+HeroScript:
+	* CreateAndSetFSM -> FSMHyperHeal / FSMMoveHero / FSMFocusToMinion / FSMAllBlocking / FSMRandomFocusToHero
+	* SetUpHero -> FSM
+	* SetStateFSM -> FSM.Transition
+	* CreateMinions -> MinionIA
+					-> MinionIA.HeroAlly
+
+Minion:
+	* CreateAndSetFSM -> FSMMoveToObjective / FSMAttackMinion / FSMPatrol
+	* Start -> FSM
+	* SetStateFSM -> FSM.Transition
+
+GameManager
+	* GetListOfNodes -> RayCastForNodes
+	* GetPathTheta -> Agent  * GetPathFindingTheta() ->	Theta -> Node
+														* Theta Run() -> PriorityQueue
+
+FSM:
+	* _current -> FSMState
+
+Agent:
+	
