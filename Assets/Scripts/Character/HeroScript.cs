@@ -13,10 +13,10 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     [SerializeField] private int _lifeTotalHero = 0;
     [SerializeField] private int _lifeTotalMinion = 0;
     [SerializeField] private int _totalMinions = 0;
-    
+
     [SerializeField] private LayerMask _layerMinionEnemy;
 
-    
+
     private int _life;
     private GameObject _stateColorObj;
     private readonly float _radiusBehavior = 4;
@@ -107,12 +107,12 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     {
         get { return _speed; }
     }
-    
+
     public LayerMask LayerMinionEnemy
     {
         get { return _layerMinionEnemy; }
     }
-    
+
     public List<Node> ListNodesForWayPoint
     {
         get { return _listNodesForWayPoint; }
@@ -311,7 +311,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
         CreateAndSetFSM();
         _stateColorObj = this.gameObject.transform.GetChild(0).gameObject;
-        _fsm = new FSM<StateHeroEnum>(_moveHeroFSM);
+
         SetColorForState(StateHeroEnum.moveHero);
 
         _life = _lifeTotalHero;
@@ -332,7 +332,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         CreateMinions(_totalMinions);
     }
 
-  
+
 
     private void CreateAndSetFSM()
     {
@@ -353,6 +353,7 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         _focusToMinionFSM.SetTransition(StateHeroEnum.moveHero, _moveHeroFSM);
         _randomFSM.SetTransition(StateHeroEnum.moveHero, _moveHeroFSM);
 
+        _fsm = new FSM<StateHeroEnum>(_moveHeroFSM);
     }
 
     #endregion

@@ -34,7 +34,6 @@ El " Roulette Wheel Selection " esta en la funcion " SetWeightForStates " .
 * Agent de que? cambiar el nombre de la clase, no se entiende si es un modelo, si es un controlador o que.
 * No hay un particleManager.
 ** Crear un UML de los scritps y en general del proceso de hero/minion y demas.
-* Crear un FlyWeigth para las variables a setear de las clases.
 * El FSMMoveHero que usa al Hero, ver que esten bien las relaciones.
 * HeroScript:
 	* AttackedFocus no se usa?
@@ -56,27 +55,27 @@ El " Roulette Wheel Selection " esta en la funcion " SetWeightForStates " .
 * Es necesario que sean delegate en Theta?
 * 
 --------------------------
-HeroScript:
-	* CreateAndSetFSM -> FSMHyperHeal / FSMMoveHero / FSMFocusToMinion / FSMAllBlocking / FSMRandomFocusToHero
-	* SetUpHero -> FSM
-	* SetStateFSM -> FSM.Transition
-	* CreateMinions -> MinionIA
-					-> MinionIA.HeroAlly
+Diagramas:
+	HeroScript:
+		* CreateAndSetFSM -> FSMHyperHeal / FSMMoveHero / FSMFocusToMinion / FSMAllBlocking / FSMRandomFocusToHero
+		* SetUpHero -> FSM
+		* SetStateFSM -> FSM.Transition
+		* CreateMinions -> MinionIA
+						-> MinionIA.HeroAlly
 
-Minion:
-	* CreateAndSetFSM -> FSMMoveToObjective / FSMAttackMinion / FSMPatrol
-	* Start -> FSM
-	* SetStateFSM -> FSM.Transition
+	Minion:
+		* CreateAndSetFSM -> FSMMoveToObjective / FSMAttackMinion / FSMPatrol
+		* Start -> FSM
+		* SetStateFSM -> FSM.Transition
 
-GameManager
-	* GetListOfNodes -> RayCastForNodes
-	* GetPathTheta -> Agent  * GetPathFindingTheta() ->	Theta -> Node
-														* Theta Run() -> PriorityQueue
+	GameManager
+		* GetListOfNodes -> RayCastForNodes
+		* GetPathTheta -> Agent  * GetPathFindingTheta() ->	Theta -> Node
+															* Theta Run() -> PriorityQueue
 
-FSM:
-	* _current -> FSMState
+	FSM:
+		* _current -> FSMState
 
-Agent:
 --------------------------
 * Se cambio el Hero y se le agrego el MinionManager
 * Se agrego el FlyweightManager para el GameManager y ahora lo usan otras clases.

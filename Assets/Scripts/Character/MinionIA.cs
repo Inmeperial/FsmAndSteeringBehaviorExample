@@ -333,7 +333,6 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
         _attackFSM.SetTransition(StateMinionEnum.move, _moveToObjFSM);
 
         _fsm = new FSM<StateMinionEnum>(_moveToObjFSM);
-
     }
 
     private void SetUpMinionAttributes()
