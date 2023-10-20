@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
@@ -11,9 +12,8 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     [SerializeField] private bool _isTeamOne = false;
     [SerializeField] private float _speed = default;
     [SerializeField] private int _lifeTotalHero = 0;
-    [SerializeField] private int _lifeTotalMinion = 0;
+    [SerializeField] private int _lifeTotalMinion = 0; //sacar
     [SerializeField] private int _totalMinions = 0;
-
     [SerializeField] private LayerMask _layerMinionEnemy;
 
 
@@ -37,7 +37,6 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     private FSMFocusToMinion<StateHeroEnum> _focusToMinionFSM;
     private FSMAllBlocking<StateHeroEnum> _allBlockingFSM;
     private FSMRandomFocusToHero<StateHeroEnum> _randomFSM;
-    private StateHeroEnum[] _heroStateList;
     private Dictionary<StateHeroEnum, int> _dicStatesForRandom = new Dictionary<StateHeroEnum, int>();
     private int _totalWeight = 0;
     private bool _isRandomStarted = false;
@@ -146,37 +145,6 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         this.transform.LookAt(obj.transform);
     }
 
-    public void SetColorForState(StateHeroEnum index)
-    {
-        switch (index)
-        {
-            case StateHeroEnum.hyperHeal:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-                break;
-            case StateHeroEnum.moveHero:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-                break;
-            case StateHeroEnum.allBlocking:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                break;
-            case StateHeroEnum.focusToMinion:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
-                break;
-            case StateHeroEnum.random:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
-                break;
-            default:
-                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-                break;
-        }
-    }
-
-    public void SetStateFSM(StateHeroEnum index)
-    {
-        SetColorForState(index);
-        _fsm.Transition(index);
-    }
-
     public void GetDamage(int num)
     {
         _life = _life - num;
@@ -195,27 +163,6 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
     public void RemoveMinion(GameObject obj)
     {
         _minionManager.RemoveMinion(obj);
-    }
-
-    private void SetNextState()
-    {
-        if (_timeSkill > 0)
-        {
-            _timeSkill -= Time.deltaTime;
-        }
-        else
-        {
-            if (!_isRandomStarted)
-            {
-                SetStateFSM(StateHeroEnum.moveHero); // if we found enemy then MoveHero State is just for iddle form and is used as transition between others states.
-                SetStateFSM(SetWeightForStates());
-                _timeSkill = _timeSkillTotal;
-            }
-            else
-            {
-                Debug.Log("_isRandomStarted true");
-            }
-        }
     }
 
     private StateHeroEnum SetWeightForStates()
@@ -293,46 +240,69 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
 
     private void SetUpHero()
     {
-        _heroStateList = new StateHeroEnum[3];
-        _heroStateList[0] = StateHeroEnum.hyperHeal;
-        _heroStateList[1] = StateHeroEnum.focusToMinion;
-        _heroStateList[2] = StateHeroEnum.allBlocking;
-
-        _dicStatesForRandom.Add(StateHeroEnum.random, 0);
-        _dicStatesForRandom.Add(StateHeroEnum.moveHero, 0);
-        _dicStatesForRandom.Add(StateHeroEnum.hyperHeal, 20);
-        _dicStatesForRandom.Add(StateHeroEnum.focusToMinion, 20);
-        _dicStatesForRandom.Add(StateHeroEnum.allBlocking, 20);
-
-        foreach (var dicState in _dicStatesForRandom)
-        {
-            _totalWeight += dicState.Value;
-        }
-
-        CreateAndSetFSM();
         _stateColorObj = this.gameObject.transform.GetChild(0).gameObject;
-
-        SetColorForState(StateHeroEnum.moveHero);
-
         _life = _lifeTotalHero;
         _minionManager = this.GetComponent<MinionManager>();
         _minionManager.StartNewMinionList();
 
-        if (_isTeamOne)
-        {
-            this.gameObject.layer = LayerMask.NameToLayer("Hero1");
-            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamOne;
-        }
-        else
-        {
-            this.gameObject.layer = LayerMask.NameToLayer("Hero2");
-            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamTwo;
-        }
-
+        SetWeightForRandomState();
+        CreateAndSetFSM();
+        SetColorForState(StateHeroEnum.moveHero);
+        SetTeam();
         CreateMinions(_totalMinions);
     }
 
+    public void SetStateFSM(StateHeroEnum index)
+    {
+        SetColorForState(index);
+        _fsm.Transition(index);
+    }
 
+    private void SetNextState()
+    {
+        if (_timeSkill > 0)
+        {
+            _timeSkill -= Time.deltaTime;
+        }
+        else
+        {
+            if (!_isRandomStarted)
+            {
+                SetStateFSM(StateHeroEnum.moveHero); // if we found enemy then MoveHero State is just for iddle form and is used as transition between others states.
+                SetStateFSM(SetWeightForStates());
+                _timeSkill = _timeSkillTotal;
+            }
+            else
+            {
+                Debug.Log("_isRandomStarted true");
+            }
+        }
+    }
+
+    public void SetColorForState(StateHeroEnum index)
+    {
+        switch (index)
+        {
+            case StateHeroEnum.hyperHeal:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                break;
+            case StateHeroEnum.moveHero:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                break;
+            case StateHeroEnum.allBlocking:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                break;
+            case StateHeroEnum.focusToMinion:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
+                break;
+            case StateHeroEnum.random:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+                break;
+            default:
+                _stateColorObj.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+                break;
+        }
+    }
 
     private void CreateAndSetFSM()
     {
@@ -354,6 +324,53 @@ public class HeroScript : MonoBehaviour, ICharacterInterface
         _randomFSM.SetTransition(StateHeroEnum.moveHero, _moveHeroFSM);
 
         _fsm = new FSM<StateHeroEnum>(_moveHeroFSM);
+    }
+
+    public void SetFSM(List<FSMState<StateHeroEnum>> listOfStates, FSMState<StateHeroEnum> stateForAllTransitions)
+    {
+        // List<FSMState<StateHeroEnum>> listOfStates = new List<FSMState<StateHeroEnum>>();
+
+        // SetFSM(listOfStates, FSMMoveHero<StateHeroEnum>(this));
+
+        FSMState<StateHeroEnum> testMovement = new FSMMoveHero<StateHeroEnum>(this);
+        listOfStates.Add(new FSMMoveHero<StateHeroEnum>(this));
+
+        foreach (var item in listOfStates)
+        {
+            if (item.GetType() == testMovement.GetType())
+            {
+                // item.SetTransition
+            }
+        }
+
+    }
+
+    private void SetWeightForRandomState()
+    {
+        _dicStatesForRandom.Add(StateHeroEnum.random, 0);
+        _dicStatesForRandom.Add(StateHeroEnum.moveHero, 0);
+        _dicStatesForRandom.Add(StateHeroEnum.hyperHeal, 20);
+        _dicStatesForRandom.Add(StateHeroEnum.focusToMinion, 20);
+        _dicStatesForRandom.Add(StateHeroEnum.allBlocking, 20);
+
+        foreach (var dicState in _dicStatesForRandom)
+        {
+            _totalWeight += dicState.Value;
+        }
+    }
+
+    private void SetTeam()
+    {
+        if (_isTeamOne)
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("Hero1");
+            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamOne;
+        }
+        else
+        {
+            this.gameObject.layer = LayerMask.NameToLayer("Hero2");
+            this.gameObject.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamTwo;
+        }
     }
 
     #endregion
