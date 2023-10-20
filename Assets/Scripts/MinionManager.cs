@@ -23,7 +23,6 @@ public class MinionManager : MonoBehaviour
         GameObject obj = Instantiate(GameManager.gameManagerStatic.FlyweightManager.minionPrefab, pos, Quaternion.identity);
         SetPropertiesNewMinion(obj, heroFather, isTeamOne);
         AddMinionToList(obj);
-
     }
 
     private void SetPropertiesNewMinion(GameObject obj, HeroScript heroFather, bool isTeamOne)
@@ -40,7 +39,6 @@ public class MinionManager : MonoBehaviour
         {
             obj.GetComponent<MeshRenderer>().material = GameManager.gameManagerStatic.FlyweightManager.materialTeamTwo;
         }
-
     }
 
     public void KillAllMinions()
@@ -48,9 +46,9 @@ public class MinionManager : MonoBehaviour
         // _isHeroDead = true;
         foreach (GameObject minion in _minionsList)
         {
-            minion.GetComponent<MinionIA>().DieMinion(this.gameObject);
+            // minion.GetComponent<MinionIA>().DieMinion(this.gameObject);
+            minion.GetComponent<MinionIA>().Die();
         }
-
     }
 
     public void RemoveMinion(GameObject obj)
@@ -61,7 +59,6 @@ public class MinionManager : MonoBehaviour
         //{
         //    _minionsList.Remove(obj);
         //}
-       
     }
 
     private void AddMinionToList(GameObject obj)

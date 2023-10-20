@@ -159,7 +159,7 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
     public void SetUpToFollowEnemy(GameObject obj)
     {
         EnemyFound = true;
-        Speed = Speed + 1f;
+        Speed += 1f;
         ObjectiveToGo = obj;
         SetStateFSM(StateMinionEnum.move);
     }
@@ -217,13 +217,17 @@ public class MinionIA : MonoBehaviour, ICharacterInterface
         Destroy(this.gameObject);
     }
 
-    public void DieMinion(GameObject caller)
-    {
-        if (caller.GetComponent<HeroScript>() != null)
-        {
-            this.Die();
-        }
-    }
+    //public void DieMinion(GameObject caller)
+    //{
+    //    if (caller.GetComponent<HeroScript>() != null)
+    //    {
+    //        this.Die();
+    //    }
+    //    else
+    //    {
+
+    //    }
+    //}
 
     public void AttackedFocus(GameObject obj)
     {
