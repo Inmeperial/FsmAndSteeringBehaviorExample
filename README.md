@@ -6,11 +6,11 @@ This is an example of IA using two different types of IA for the movements and c
 
 Diagrams:
 
-![Export-1](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/8155a0d7-b847-43de-8b77-3390e5b783fa)
+![DiagramResume-1](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/938198e0-575c-4170-bb35-46cb00bd1964)
 ##
-![Export-2](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/2c31ff9a-6dd3-4909-8d15-ef0604ab857e)
+![DiagramResume-2](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/64029f44-c87d-4e70-a915-23593ac550a6)
 ##
-![Export-3](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/9a5d9ae3-c113-4b9a-b802-59240d1cbfd0)
+![DiagramResume-3](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/7c4ddd45-1914-42f8-a8d5-b36117259a34)
 ##
-![Export-4](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/eb7ba6a4-e361-4712-88d3-33a01fd84b26)
+![DiagramResume-4](https://github.com/Inmeperial/FsmAndSteeringBehaviorExample/assets/6373464/49c8bc55-8615-42d3-b14c-4eaf196e3a8a)
 ##
